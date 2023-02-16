@@ -1,39 +1,32 @@
-import {
-  Logger,
-  ILogObj
-} from 'tslog'
-import {
-  ILogger
-} from "./logger.interface";
-import {
-  injectable
-} from "inversify";
-import 'reflect-metadata'
+import { Logger, ILogObj } from 'tslog';
+import { ILogger } from './logger.interface';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
 
 @injectable()
 export class LoggerService implements ILogger {
-  public logger: Logger<ILogObj>
+	public logger: Logger<ILogObj>;
 
-  constructor() {
+	constructor() {
+		this.logger = new Logger<ILogObj>({
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			displayInstanceName: false,
+			displayLoggerName: false,
+			displayFilePath: 'hidden',
+			displayFunctionName: false,
+		});
+	}
 
-    this.logger = new Logger<ILogObj>({
-      // @ts-ignore
-      displayInstanceName: false,
-      displayLoggerName: false,
-      displayFilePath: 'hidden',
-      displayFunctionName: false
-    })
-  }
+	log(...args: unknown[]): void {
+		this.logger.info(...args);
+	}
 
-  log(...args: unknown[]) {
-    this.logger.info(...args)
-  }
+	error(...args: unknown[]): void {
+		this.logger.error(...args);
+	}
 
-  error(...args: unknown[]) {
-    this.logger.error(...args)
-  }
-
-  warn(...args: unknown[]) {
-    this.logger.warn(...args)
-  }
+	warn(...args: unknown[]): void {
+		this.logger.warn(...args);
+	}
 }
